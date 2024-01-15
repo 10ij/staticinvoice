@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Invoice</title>
+</head>
+<body class="m-5">
+<style>
+    @media print {
+        #printbtn {
+            display: none;
+        }
+    }
+</style>
+<style type="text/css" media="print">
+    @page {
+        size: auto;  /* idk what this is, from a tutorial)
+        margin: 0; 
+    }
+</style>
+
+<div class="container mx-auto p-6">
+  <div class="flex justify-between items-center mb-4">
+    <div class="flex items-center">
+      <div class="mr-4">
+        <img src="logo.webp" alt="Company Logo" class="w-32 h-auto">
+      </div>
+      <div class="text-left">
+        <h2 class="text-2xl font-bold">company</h2>
+        <p class="text-lg">address</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-between items-start">
+
+    <div class="w-1/2">
+      <h3 class="text-2xl font-bold">Car Details:</h3>
+      <p><strong>Make: </strong><a id="car_make"></a></p>
+      <p><strong>Model: </strong><a id="car_model"></a></p>
+      <p><strong>Year: </strong><a id="car_year"></a></p>
+      <p><strong>Registration: </strong><a id="car_registration"></a></p>
+      <p><strong>Miles: </strong><a id="car_miles"></a></p>
+    </div>
+
+    <div class="w-1/2">
+      <h3 class="text-2xl font-bold">Customer Details:</h3>
+      <p><strong>Name: </strong><a id="custname"></a></p>
+      <p><strong>Telephone: </strong><a id="custtel"></a></p>
+      <p><strong>Address: </strong><p id="custadd"></p>
+    </div>
+
+  </div>
+  <div class="mt-6">
+    <h3 class="font-medium leading-tight text-2xl mt-0 mb-2">Invoice Date: <a id="date"></a></h3>
+  </div>
+  <div id="invoiceData">
+
+  </div>
+
+  <button id="printbtn" onclick="window.print()" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-lg px-6 py-3 mt-5">Print Invoice</button>
+</div>
+
+<script>
+  window.onload = function() {
+
+    let now = new Date();
+    let datetime = now.toLocaleString();
+    document.getElementById("date").innerHTML = datetime;
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const custname = urlParams.get('custname');
+    const custadd = urlParams.get('custadd');
+    const custtel = urlParams.get('custtel');
+
+    document.getElementById('custname').innerHTML = custname;
+    document.getElementById('custadd').innerHTML = custadd;
+    document.getElementById('custtel').innerHTML = custtel;
+
+    // car details
+    const make = urlParams.get('make');
+    const model = urlParams.get('model');
+    const year = urlParams.get('year');
+    const registration = urlParams.get('registration');
+    const miles = urlParams.get('miles');
+    const notes = urlParams.get('notes');
+
+    // html bit
+
+    document.getElementById('car_make').innerHTML = make;
+    document.getElementById('car_model').innerHTML = model;
+    document.getElementById('car_year').innerHTML = year;
+    document.getElementById('car_miles').innerHTML = miles;
+    document.getElementById('car_registration').innerHTML = registration;
+
+    // costs and calcs
+    const items = urlParams.getAll('items[]');
+    const costs = urlParams.getAll('costs[]');
+    const vat = urlParams.getAll('vat[]');
+    let vatmod = [];
+    for (let i = 0; i < vat.length; i++) {
+      vatmod[i] = vat[i] * 0.01
+      vatmod[i] += 1
+    }
+    let amount = [];
+    // For loop to calculate the after VAT prices of each item
+    for (let i = 0; i < costs.length; i++) {
+      amount[i] = costs[i] * vatmod[i]; // Assign the calculated amount to the array
+      amount[i] = parseFloat(amount[i].toFixed(2))
+    }
+    let total = amount.reduce((accumulator, currentValue) => accumulator + currentValue);
+    total = total.toFixed(2)
+
+    // make the html / render
+
+    let invoiceHTML = `
+      <hr class="my-4">
+      <h4 class="text-2xl mb-2">Items and Costs:</h4>
+      <table class="min-w-full mt-2 table-auto">
+        <thead>
+          <tr>
+            <th class="px-4 py-2 text-left">Item</th>
+            <th class="px-4 py-2 text-right">(£) Cost</th>
+            <th class="px-4 py-2 text-right">VAT (%)</th>
+            <th class="px-4 py-2 text-right">(£) Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    for (let i = 0; i < items.length; i++) {
+      invoiceHTML += `
+        <tr>
+          <td class="border px-4 py-2"><strong>${items[i]}</strong></td>
+          <td class="border px-4 py-2 text-right">£${costs[i]}</td>
+          <td class="border px-4 py-2 text-right">${vat[i]}%</td>
+          <td class="border px-4 py-2 text-right">£${amount[i]}</td>
+        </tr>
+      `;
+    }
+
+    invoiceHTML += `</tbody></table><hr class="my-4"><h3 class="font-medium mt-3 leading-tight text-2xl mb-4 text-right">Total: £${total}</h3>`;
+
+    invoiceHTML += '<hr class="my-4"><h3 class="font-medium mt-3 leading-tight text-2xl mb-4">Notes:</h3>';
+    invoiceHTML += `<p class="mt-4">${notes}</p>`;
+    // Insert the generated HTML into the page
+    document.getElementById('invoiceData').innerHTML = invoiceHTML;
+  }
+</script>
+
+</body>
+</html>

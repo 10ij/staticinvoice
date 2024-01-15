@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <title>Invoice</title>
+</head>
+<body>
+
+<nav class="relative w-full flex flex-wrap items-center justify-between py-3 bg-gray-100 text-gray-500 hover:text-gray-700 focus:text-gray-700 shadow-lg">
+  <div class="container-fluid w-full flex flex-wrap items-center justify-between px-6">
+    <div class="container-fluid">
+      <a class="text-xl text-black font-semibold" href="#">Create Invoice</a>
+    </div>
+  </div>
+</nav>
+
+<div class="m-4">
+
+  <div class="container max-w-screen-md mx-auto">
+    <div>
+      <form method="GET" action="invoice.html">
+        <div class="mt-6">
+          <h3 class="font-medium leading-tight text-4xl mt-0 mb-2">Customer Details:</h3>
+        </div>
+        <hr class="mb-4">
+
+        <!-- Name of the human -->
+        <div class="mb-4">
+          <label for="custname" class="block mb-2 text-2xl font-medium">Name:</label>
+          <input type="text" id="custname" name="custname" placeholder="Tyrone"
+                 class="block w-full p-2.5 text-gray-900 border border-gray-300 rounded-lg bg-slate-300 sm:text-md focus:ring-slate-600 focus:border-slate-600"
+                 >
+        </div>
+
+        <div class="mb-4">
+          <label for="custadd" class="block mb-2 text-2xl font-medium">Address: </label>
+          <input type="text" id="custadd" name="custadd" placeholder="123 Chapman St, London E1 2PH"
+                 class="block w-full p-2.5 text-gray-900 border border-gray-300 rounded-lg bg-slate-300 sm:text-md focus:ring-slate-600 focus:border-slate-600"
+                 >
+        </div>
+
+        <div class="mb-4">
+          <label for="custtel" class="block mb-2 text-2xl font-medium">Telephone:</label>
+          <input type="number" id="custtel" name="custtel" placeholder="07123456789"
+                 class="block w-full p-2.5 text-gray-900 border border-gray-300 rounded-lg bg-slate-300 sm:text-md focus:ring-slate-600 focus:border-slate-600"
+                 >
+        </div>
+
+        <div class="mt-6">
+          <h3 class="font-medium leading-tight text-4xl mt-0 mb-2">Car Details:</h3>
+        </div>
+        <hr class="mb-4">
+
+        <div class="mb-4">
+          <label for="make" class="block mb-2 text-2xl font-medium">Make:</label>
+          <input type="text" id="make" name="make" placeholder="Ford"
+                 class="block w-full p-2.5 text-gray-900 border border-gray-300 rounded-lg bg-slate-300 sm:text-md focus:ring-slate-600 focus:border-slate-600"
+                 required>
+        </div>
+
+        <div class="mb-4">
+          <label for="model" class="block mb-2 text-2xl font-medium">Model:</label>
+          <input type="text" id="model" name="model" placeholder="Fiesta"
+                 class="block w-full p-2.5 text-gray-900 border border-gray-300 rounded-lg bg-slate-300 sm:text-md focus:ring-slate-600 focus:border-slate-600"
+                 required>
+        </div>
+
+        <div class="mb-4">
+          <label for="year" class="block mb-2 text-2xl font-medium">Year:</label>
+          <input type="text" id="year" name="year" placeholder="2019"
+                 class="block w-full p-2.5 text-gray-900 border border-gray-300 rounded-lg bg-slate-300 sm:text-md focus:ring-slate-600 focus:border-slate-600"
+                 required>
+        </div>
+
+        <div class="mb-4">
+          <label for="registration" class="block mb-2 text-2xl font-medium">Registration:</label>
+          <input type="text" id="registration" name="registration" placeholder="DN72NZW"
+                 class="block w-full p-2.5 text-gray-900 border border-gray-300 rounded-lg bg-slate-300 sm:text-md focus:ring-slate-600 focus:border-slate-600"
+                 required>
+        </div>
+
+        <div class="mb-4">
+          <label for="miles" class="block mb-2 text-2xl font-medium">Miles:</label>
+          <input type="number" id="miles" name="miles" placeholder="38000"
+                 class="block w-full p-2.5 text-gray-900 border border-gray-300 rounded-lg bg-slate-300 sm:text-md focus:ring-slate-600 focus:border-slate-600"
+                 >
+        </div>
+
+        <h3 class="font-medium leading-tight text-4xl mb-4">Items and Notes:</h3>
+        <hr class="mb-4">
+        <div id="itemContainer">
+          <div class="mb-4 item-row">
+            <label for="item1" class="block mb-2 text-xl font-medium">Item:</label>
+            <input required type="text" id="item1" name="items[]" placeholder="New Clutch" class="w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-slate-300">
+            <label for="cost1" class="block mb-2 text-xl font-medium mt-2">(£) Cost:</label>
+            <input required type="number" id="cost1" name="costs[]" placeholder="300" class="w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-slate-300">
+            <label for="vat1" class="block mb-2 text-xl font-medium mt-2">VAT (%):</label>
+            <input required type="number" id="vat1" name="vat[]" value="0" class="w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-slate-300">
+            <button type="button" class="bg-red-600 text-white px-4 py-2 rounded-lg mt-2" onclick="removeItem(this)">Remove Item</button>
+          </div>
+        </div>
+        <button type="button" onclick="addItem()" class="bg-green-600 text-white px-4 py-2 rounded-lg">Add Item</button>
+
+        <div class="mb-4 mt-3">
+          <label for="notes" class="block mb-2 text-2xl font-medium">Notes:</label>
+          <textarea id="notes" name="notes" placeholder="Any additional notes..." rows="4" class="w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-slate-300"></textarea>
+        </div>
+
+        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-lg px-6 py-3">Print</button>
+      </form>
+    </div>
+
+    <script>
+      function addItem() {
+        const itemContainer = document.getElementById('itemContainer');
+        const itemNumber = itemContainer.children.length + 1;
+
+        const newItemHTML = `
+      <div class="mb-4 item-row">
+        <label for="item${itemNumber}" class="block mb-2 text-xl font-medium">Item:</label>
+        <input required type="text" id="item${itemNumber}" name="items[]" placeholder="Item ${itemNumber}" class="w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-slate-300">
+        <label for="cost${itemNumber}" class="block mb-2 text-xl font-medium mt-2">Cost:</label>
+        <input required type="number" id="cost${itemNumber}" name="costs[]" placeholder="Cost" class="w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-slate-300">
+        <label for="vat${itemNumber}" class="block mb-2 text-xl font-medium mt-2">VAT (%):</label>
+        <input required type="number" value="0" id="vat${itemNumber}" name="vat[]" placeholder="0" class="w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-slate-300">
+        <button type="button" class="bg-red-600 text-white px-4 py-2 rounded-lg mt-2" onclick="removeItem(this)">Remove Item</button>
+      </div>
+    `;
+        itemContainer.insertAdjacentHTML('beforeend', newItemHTML);
+      }
+
+      // remove a row
+      function removeItem(button) {
+        const itemRow = button.closest('.item-row');
+        itemRow.remove();
+      }
+
+      // export form data to CSV, ill finish it later icl
+      function exportToCSV() {
+        const form = document.getElementById('invoiceForm'); // todo: gotta add this
+        const formData = new FormData(form);
+
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "Make,Model,Registration,Miles,Item,Cost,Notes\n";
+
+        // add car details
+        const make = formData.get('make');
+        const model = formData.get('model');
+        const registration = formData.get('registration');
+        const miles = formData.get('miles');
+        const notes = formData.get('notes');
+
+        // get all items and costs
+        const items = formData.getAll('items[]');
+        const costs = formData.getAll('costs[]');
+
+        // create the CSV data
+        items.forEach((item, index) => {
+          csvContent += `${make},${model},${registration},${miles},${item},${costs[index]},${notes}\n`;
+        });
+
+        // add the the CSV
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', 'invoice.csv');
+        document.body.appendChild(link); // Firefox
+        link.click();
+      }
+    </script>
+
+
+  </div>
+
+</div>
+
+<footer class="w-full h-16 bg-gray-100 mt-10"></footer>
+
+</body>
+</html>
