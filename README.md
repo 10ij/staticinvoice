@@ -1,7 +1,7 @@
 # Invoice Generator 🚗
 
 Simple invoice maker for car repairs and services. No fancy backend, no database, just HTML and JavaScript.
-Not intended for anyone but myself to use. For a more polished invoicing app check out `10ij/ReceiptRack`
+Not intended for anyone but myself to use. For a more polished invoicing app check out `10ij/BillSync`
 
 ## What it does
 
